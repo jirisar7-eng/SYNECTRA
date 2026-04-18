@@ -1,0 +1,5 @@
+{
+  "project": "SYNECTRA",
+  "studio": "Synthesis",
+  "rules": ["Max 100 lines per file", "Czech language only", "Mobile-first UI", "G-Sync mandatory"]
+}
