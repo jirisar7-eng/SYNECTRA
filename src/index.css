@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #000000;
+  --color-surface: rgba(28, 28, 30, 0.7);
+  --color-accent: #E95420;
+  --color-accent-dim: rgba(233, 84, 32, 0.1);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-text-main: #FFFFFF;
+  --color-text-muted: #8E8E93;
+
+  --font-mono: 'JetBrains Mono', Courier, monospace;
+  --font-sans: "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-text-main font-sans;
+  }
+}
