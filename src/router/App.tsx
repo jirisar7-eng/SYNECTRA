@@ -20,7 +20,7 @@ const App = () => {
     const role = isMallfurion ? 'Mallfurion' : 'Host';
     setUser(role);
     setStep('main');
-    console.log(`[AUTH] Uživatel ${role} přihlášen k terminálu.`);
+    console.log("[AUTH] Uživatel " + role + " přihlášen k terminálu.");
   };
 
   const handleNav = (target: string) => {
@@ -34,8 +34,8 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg text-text-main font-sans selection:bg-accent selection:text-bg flex items-center justify-center p-4">
-      <div className="w-full max-w-[420px] h-[820px] bg-black border border-border rounded-[32px] flex flex-col shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden relative pb-24">
+    <div className="min-h-screen text-text-main font-sans selection:bg-accent selection:text-bg flex items-center justify-center p-4">
+      <div className="w-full max-w-[420px] h-[820px] bg-black/40 backdrop-blur-md border border-white/10 rounded-[40px] flex flex-col shadow-[0_40px_100px_rgba(0,0,0,0.6)] overflow-hidden relative pb-24">
         <Branding />
 
         <main className="flex-1 overflow-hidden flex flex-col relative">
@@ -89,7 +89,7 @@ const App = () => {
                     onClick={() => setStep('welcome')}
                     className="text-[10px] font-mono text-zinc-700 hover:text-accent uppercase underline transition-colors"
                   >
-                    Lock System (Identity: ${user})
+                    Lock System (Identity: " + user + ")
                   </button>
                 </div>
               </motion.div>
