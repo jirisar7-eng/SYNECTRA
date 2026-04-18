@@ -1,0 +1,1 @@
+SYNECTRA - Vlajkový projekt studia Synthesis. Adaptivní media processor.
