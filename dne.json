@@ -7,7 +7,7 @@
     "token_present": true,
     "last_commit": null
   },
-  "system_state": { "tick": 4, "ssm_status": "CORE_DEV" },
+  "system_state": { "tick": 5, "ssm_status": "DUAL_ZONE_ACTIVE" },
   "audit_log": [
     { "id": "INIT-001", "action": "Kompletní rekonstrukce prostředí Genesis", "status": "SUCCESS" },
     { "id": "UI-001", "action": "Tvorba Horní branding sekce", "status": "SUCCESS" },
@@ -17,7 +17,8 @@
     { "id": "UI-003", "action": "Tvorba AdminDashboard rozhraní", "status": "SUCCESS" },
     { "id": "DATA-001", "action": "Definice MediaTypes", "status": "SUCCESS" },
     { "id": "SCAN-001", "action": "Implementace StreamScanner", "status": "SUCCESS" },
-    { "id": "UI-004", "action": "Vytvoření Downloader UI", "status": "SUCCESS" }
+    { "id": "UI-004", "action": "Vytvoření Downloader UI", "status": "SUCCESS" },
+    { "id": "UI-005", "action": "Vytvoření PublicView", "status": "SUCCESS" }
   ],
   "pending_actions": [
     "Integrace FFmpeg pro transkódování"
