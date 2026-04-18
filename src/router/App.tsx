@@ -1,10 +1,11 @@
-/** AuditID: RT-001 | Finální stabilní orchestrace a správa sezení */
+/** AuditID: RT-001 | Finální orchestrace s Dockem */
 import { useState } from 'react';
 import { Branding } from '../ui/Branding';
 import { WelcomeScreen } from '../ui/WelcomeScreen';
 import { LoginForm } from '../ui/LoginForm';
 import { PublicView } from '../ui/PublicView';
 import { AdminDashboard } from '../ui/AdminDashboard';
+import { MobileDock } from '../ui/MobileDock';
 import { generateGsyncPacket, copySyncToClipboard } from '../logic/SyncController';
 import dneData from '../../dne.json';
 import manifestData from '../../manifest_rules.json';
@@ -15,24 +16,29 @@ const App = () => {
   const [user, setUser] = useState('');
 
   const handleLogin = (u: string, p: string) => {
-    const isMallfurion = u === 'Mallfurion' && p === '1234';
-    setUser(isMallfurion ? 'Mallfurion' : 'Host');
+    const isMallfurion = (u.toLowerCase() === 'mallfurion' && p === '1234');
+    const role = isMallfurion ? 'Mallfurion' : 'Host';
+    setUser(role);
     setStep('main');
-    console.log(`[AUTH] Uživatel ${isMallfurion ? 'Mallfurion' : 'Host'} přihlášen k terminálu.`);
+    console.log(`[AUTH] Uživatel ${role} přihlášen k terminálu.`);
   };
 
-  const gsyncAction = async () => {
-    const packet = generateGsyncPacket(dneData, manifestData.rules);
-    await copySyncToClipboard(packet);
-    alert("G-SYNC PAKET GENEROVÁN A ULOŽEN DO SCHRÁNKY");
+  const handleNav = (target: string) => {
+    if (target === 'Terminál') setStep('main');
+    if (target === 'Admin' && user === 'Mallfurion') setStep('admin');
+    if (target === 'G-Sync') {
+      const packet = generateGsyncPacket(dneData, manifestData.rules);
+      copySyncToClipboard(packet);
+      alert("G-SYNC PAKET GENEROVÁN A ULOŽEN DO SCHRÁNKY");
+    }
   };
 
   return (
     <div className="min-h-screen bg-bg text-text-main font-sans selection:bg-accent selection:text-bg flex items-center justify-center p-4">
-      <div className="w-full max-w-[420px] h-[800px] bg-surface border border-border rounded-[24px] flex flex-col shadow-[0_40px_100px_rgba(0,0,0,0.5)] overflow-hidden relative">
+      <div className="w-full max-w-[420px] h-[820px] bg-black border border-border rounded-[32px] flex flex-col shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden relative pb-24">
         <Branding />
 
-        <main className="flex-1 overflow-hidden flex flex-col relative pt-4">
+        <main className="flex-1 overflow-hidden flex flex-col relative">
           <AnimatePresence mode="wait">
             {step === 'welcome' && (
               <motion.div
@@ -52,18 +58,18 @@ const App = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="px-6"
+                className="pt-4"
               >
-                <div className="mb-6">
-                  <h3 className="text-accent font-bold uppercase tracking-tight text-lg">Autorizace Genesis</h3>
-                  <p className="text-text-muted text-[10px] font-mono uppercase">Zadejte své pověření</p>
+                <div className="px-6 mb-8 text-center">
+                  <h3 className="text-white font-bold uppercase tracking-[0.2em] text-sm">Genesis Vault</h3>
+                  <div className="h-[2px] w-12 bg-accent mx-auto mt-2" />
                 </div>
                 <LoginForm onLogin={handleLogin} />
                 <button 
                   onClick={() => setStep('welcome')}
-                  className="w-full text-[10px] font-mono text-text-muted hover:text-accent uppercase underline mt-8"
+                  className="w-full text-[10px] font-mono text-zinc-600 hover:text-accent uppercase underline mt-12 mb-4"
                 >
-                  Návrat na úvod
+                  SYSTEM REBOOT
                 </button>
               </motion.div>
             )}
@@ -74,27 +80,16 @@ const App = () => {
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
-                className="flex-1 overflow-y-auto scrollbar-hide flex flex-col"
+                className="flex-1 overflow-y-auto scrollbar-hide flex flex-col pt-4"
               >
                 <PublicView onAdminClick={() => {}} /> 
                 
-                {user === 'Mallfurion' && (
-                  <div className="px-6 pb-8 mt-6">
-                    <button 
-                      onClick={() => setStep('admin')}
-                      className="w-full p-5 bg-bg border-2 border-accent text-accent rounded-xl font-bold uppercase text-xs tracking-[0.2em] shadow-[0_0_20px_rgba(0,212,255,0.15)] hover:bg-accent-dim transition-all active:scale-[0.98]"
-                    >
-                      VSTOUPIT DO ADMINISTRACE
-                    </button>
-                  </div>
-                )}
-
                 <div className="mt-auto p-6 flex justify-center">
                   <button 
                     onClick={() => setStep('welcome')}
-                    className="text-[10px] font-mono text-text-muted hover:text-accent uppercase underline transition-colors"
+                    className="text-[10px] font-mono text-zinc-700 hover:text-accent uppercase underline transition-colors"
                   >
-                    Odhlásit (Aktuálně: ${user})
+                    Lock System (Identity: ${user})
                   </button>
                 </div>
               </motion.div>
@@ -106,16 +101,16 @@ const App = () => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                className="flex-1 overflow-hidden"
+                className="flex-1 overflow-hidden pt-4"
               >
                 <div className="flex-1 overflow-y-auto scrollbar-hide flex flex-col h-full">
                   <AdminDashboard />
-                  <div className="mt-auto p-6 pt-0">
+                  <div className="mt-auto p-6 pb-2">
                     <button 
                       onClick={() => setStep('main')}
-                      className="w-full text-[10px] font-mono text-text-muted hover:text-accent uppercase underline transition-colors py-2"
+                      className="w-full text-[10px] font-mono text-zinc-700 hover:text-accent uppercase underline transition-colors py-2"
                     >
-                      Zpět do terminálu
+                      Exit Admin Mode
                     </button>
                   </div>
                 </div>
@@ -124,15 +119,12 @@ const App = () => {
           </AnimatePresence>
         </main>
         
-        {step !== 'welcome' && (
-          <div className="p-6 pt-0 mt-auto">
-            <button 
-              onClick={gsyncAction}
-              className="w-full p-3 bg-transparent text-zinc-900 border border-border border-dashed rounded-lg text-[9px] font-mono uppercase tracking-[0.2em] hover:text-accent hover:border-accent/40 transition-all active:scale-[0.98]"
-            >
-              GENEROVAT G-SYNC PAKET
-            </button>
-          </div>
+        {(step === 'main' || step === 'admin') && (
+          <MobileDock 
+            onNavigate={handleNav} 
+            currentView={step} 
+            isAdmin={user === 'Mallfurion'} 
+          />
         )}
       </div>
     </div>
